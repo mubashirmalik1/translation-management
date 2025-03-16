@@ -43,6 +43,7 @@ docker-compose exec app bash
 ```
 **Then run the following commands:**
 ```bash
+composer install
 php artisan key:generate
 php artisan migrate --seed
 php artisan l5-swagger:generate
