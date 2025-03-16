@@ -56,6 +56,12 @@ The API is available at:
 - **Translations:** `http://localhost:9000/api/translations`
 - **Locales:** `http://localhost:9000/api/locales`
 
+### 6. Run Tests
+**From the app container shell, run the following command:**
+```bash
+php artisan test
+```
+
 ## Swagger Documentation
 
 View interactive API documentation at:  
