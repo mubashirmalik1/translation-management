@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: laravel-translation-app
+        container_name: laravel-app
+        restart: unless-stopped
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - db
+
+    webserver:
+        image: nginx:latest
+        container_name: laravel-nginx
+        restart: unless-stopped
+        ports:
+            - "9000:80"   # Map host port 9000 to container port 80
+        volumes:
+            - ./:/var/www
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+        depends_on:
+            - app
+
+    db:
+        image: mysql:8.0
+        container_name: laravel-translation-db
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: laravel
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_USER: laravel
+            MYSQL_PASSWORD: secret
+        ports:
+            - "3306:3306"
+        volumes:
+            - dbdata:/var/lib/mysql
+
+volumes:
+    dbdata:

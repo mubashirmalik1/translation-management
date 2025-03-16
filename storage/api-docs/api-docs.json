@@ -1,0 +1,561 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Translation Management API",
+        "description": "API documentation for the Translation Management Service",
+        "contact": {
+            "email": "support@example.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/locales": {
+            "get": {
+                "tags": [
+                    "Locale"
+                ],
+                "summary": "Get a paginated list of locales",
+                "operationId": "99e0538d08dc549df4fd96ee082b1d38",
+                "responses": {
+                    "200": {
+                        "description": "Language retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Locale"
+                ],
+                "summary": "Store a new locale",
+                "operationId": "0fae2a12a32d1c38e6f8cb865e68a82b",
+                "requestBody": {
+                    "description": "Pass locale data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "code"
+                                ],
+                                "properties": {
+                                    "code": {
+                                        "type": "string",
+                                        "example": "en"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "English"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Language created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/locales/{locale}": {
+            "get": {
+                "tags": [
+                    "Locale"
+                ],
+                "summary": "Get a single locale",
+                "operationId": "2e7f3c774bbcdf0504a16fb67540999f",
+                "parameters": [
+                    {
+                        "name": "locale",
+                        "in": "path",
+                        "description": "ID of locale to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Language retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Locale"
+                ],
+                "summary": "Update an existing locale",
+                "operationId": "b9f47f4c43e756285d77a8df546d86e4",
+                "parameters": [
+                    {
+                        "name": "locale",
+                        "in": "path",
+                        "description": "ID of locale to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Pass updated locale data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "code": {
+                                        "type": "string",
+                                        "example": "fr"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "French"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Language updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Locale"
+                ],
+                "summary": "Delete a locale",
+                "operationId": "fff4f32edffa47812bb765e70a0f5b8f",
+                "parameters": [
+                    {
+                        "name": "locale",
+                        "in": "path",
+                        "description": "ID of locale to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Language deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/translations": {
+            "get": {
+                "tags": [
+                    "Translation"
+                ],
+                "summary": "Get a paginated list of translations",
+                "operationId": "03e0745fb3bed90fe04f46a1395fa4c1",
+                "responses": {
+                    "200": {
+                        "description": "Translation retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Translation"
+                ],
+                "summary": "Store a new translation",
+                "operationId": "711dfe2c7f0dbd38f67d0f3e7e07f5b5",
+                "requestBody": {
+                    "description": "Pass translation data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "locale_id",
+                                    "translation_key",
+                                    "translation_content"
+                                ],
+                                "properties": {
+                                    "locale_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "translation_key": {
+                                        "type": "string",
+                                        "example": "welcome.message"
+                                    },
+                                    "translation_content": {
+                                        "type": "string",
+                                        "example": "Welcome to our site!"
+                                    },
+                                    "tags": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "example": "greeting"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Translation created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/translations/{translation}": {
+            "get": {
+                "tags": [
+                    "Translation"
+                ],
+                "summary": "Get a single translation",
+                "operationId": "7a55965d9c747df8e0d94c232ebe2eaf",
+                "parameters": [
+                    {
+                        "name": "translation",
+                        "in": "path",
+                        "description": "ID of translation to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Translation retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Translation"
+                ],
+                "summary": "Update an existing translation",
+                "operationId": "1db84a1409a1265e16a71d4bbc05fb93",
+                "parameters": [
+                    {
+                        "name": "translation",
+                        "in": "path",
+                        "description": "ID of translation to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Pass updated translation data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "translation_key": {
+                                        "type": "string",
+                                        "example": "hello.updated"
+                                    },
+                                    "translation_content": {
+                                        "type": "string",
+                                        "example": "Hello Updated"
+                                    },
+                                    "tags": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "example": "greeting"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Translation updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Translation"
+                ],
+                "summary": "Delete a translation",
+                "operationId": "393418b0e9f97e665ea2605e9350957f",
+                "parameters": [
+                    {
+                        "name": "translation",
+                        "in": "path",
+                        "description": "ID of translation to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Translation deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/translations/search": {
+            "get": {
+                "tags": [
+                    "Translation"
+                ],
+                "summary": "Search translations",
+                "operationId": "0e8e57c1d0fe6abb8a7320538657df42",
+                "parameters": [
+                    {
+                        "name": "translation_key",
+                        "in": "query",
+                        "description": "Search by translation key",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "translation_content",
+                        "in": "query",
+                        "description": "Search by translation content",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tag",
+                        "in": "query",
+                        "description": "Search by tag name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Translation retrieve successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/translations/export": {
+            "get": {
+                "tags": [
+                    "Translation"
+                ],
+                "summary": "Export translations as JSON",
+                "operationId": "9f227c61c766f0f5cacdb54bab6df4a2",
+                "responses": {
+                    "200": {
+                        "description": "Translation retrieve successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Locale",
+            "description": "Locale"
+        },
+        {
+            "name": "Translation",
+            "description": "Translation"
+        }
+    ]
+}
