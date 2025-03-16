@@ -22,8 +22,8 @@ This is a Laravel-based Translation Management Service API designed to showcase 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/<your-username>/translation-management-service.git
-cd translation-management-service
+git clone https://github.com/mubashirmalik1/translation-management.git
+cd translation-management
 ```
 ### 2. Copy the Environment File
 
