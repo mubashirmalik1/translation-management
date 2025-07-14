@@ -17,8 +17,8 @@ class TranslationResource extends JsonResource
         //return parent::toArray($request);
         return [
             'id' => $this->id,
-            'key' => $this->key,
-            'value' => $this->value,
+            'key' => $this->translation_key,
+            'value' => $this->translation_content,
             'locale' => new LocaleResource($this->whenLoaded('locale')),
             'created_at' => Carbon::parse($this->created_at)->diffForHumans(),
             'updated_at' => Carbon::parse($this->updated_at)->diffForHumans(),
