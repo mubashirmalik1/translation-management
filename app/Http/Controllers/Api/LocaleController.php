@@ -6,10 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLocaleRequest;
 use App\Http\Requests\UpdateLocaleRequest;
 use App\Models\Locale;
+use App\Services\LocaleService;
 use Illuminate\Http\Request;
 
 class LocaleController extends Controller
 {
+    protected $localeService;
+
+    public function __construct(LocaleService $localeService)
+    {
+        $this->localeService = $localeService;
+    }
+
     /**
      * @OA\Get(
      *     path="/api/locales",
@@ -27,7 +35,7 @@ class LocaleController extends Controller
      */
     public function index()
     {
-        $locales = Locale::paginate(10);
+        $locales = $this->localeService->getAllLocales();
         return response()->success($locales, 'language retrieve successfully.', 200);
     }
 
@@ -59,7 +67,7 @@ class LocaleController extends Controller
     {
         $data = $request->validated();
 
-        $locale = Locale::create($data);
+        $locale = $this->localeService->createLocale($data);
 
         return response()->success($locale, 'Language created successfully.', 201);
     }
@@ -125,7 +133,7 @@ class LocaleController extends Controller
     {
         $data = $request->validated();
 
-        $locale->update($data);
+        $this->localeService->updateLocale($locale, $data);
 
         return response()->success($locale, 'Language updated successfully.', 200);
 
@@ -155,7 +163,7 @@ class LocaleController extends Controller
      */
     public function destroy(Locale $locale)
     {
-        $locale->delete();
+        $this->localeService->deleteLocale($locale);
         return response()->success([], 'language delete successfully.', 204);
     }
 }

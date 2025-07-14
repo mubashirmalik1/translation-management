@@ -7,6 +7,7 @@ use App\Http\Requests\StoreTranslationRequest;
 use App\Http\Requests\UpdateTranslationRequest;
 use App\Models\Tag;
 use App\Models\Translation;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -22,6 +23,13 @@ use Illuminate\Support\Facades\DB;
  */
 class TranslationController extends Controller
 {
+    protected $translationService;
+
+    public function __construct(TranslationService $translationService)
+    {
+        $this->translationService = $translationService;
+    }
+
     /**
      * @OA\Get(
      *     path="/api/translations",
@@ -39,7 +47,7 @@ class TranslationController extends Controller
      */
     public function index(Request $request)
     {
-        $translations = Translation::query()->with('tags', 'locale')->paginate(50);
+        $translations = $this->translationService->getAllTranslations($request);
 
         return response()->success($translations, 'Translation retrieved successfully.', 200);
 
@@ -77,18 +85,7 @@ class TranslationController extends Controller
      */
     public function store(StoreTranslationRequest $request)
     {
-        $data = $request->validated();
-
-        $translation = Translation::create($data);
-
-        if (!empty($request->tags)) {
-            $tagIds = [];
-            foreach ($request->tags as $tagName) {
-                $tag = Tag::firstOrCreate(['name' => $tagName]);
-                $tagIds[] = $tag->id;
-            }
-            $translation->tags()->sync($tagIds);
-        }
+        $translation = $this->translationService->createTranslation($request->validated());
 
         return response()->success($translation, 'Translation Create successfully.', 201);
     }
@@ -157,18 +154,7 @@ class TranslationController extends Controller
      */
     public function update(UpdateTranslationRequest $request, Translation $translation)
     {
-        $data = $request->validated();
-
-        $translation->update($data);
-
-        if (isset($data['tags'])) {
-            $tagIds = [];
-            foreach ($data['tags'] as $tagName) {
-                $tag = Tag::firstOrCreate(['name' => $tagName]);
-                $tagIds[] = $tag->id;
-            }
-            $translation->tags()->sync($tagIds);
-        }
+        $translation = $this->translationService->updateTranslation($translation, $request->validated());
 
         return response()->success($translation, 'Translation update successfully.', 200);
 
@@ -198,7 +184,7 @@ class TranslationController extends Controller
      */
     public function destroy(Translation $translation)
     {
-        $translation->delete();
+        $this->translationService->deleteTranslation($translation);
         return response()->success([], 'Translation delete successfully.', 200);
     }
 
@@ -238,58 +224,9 @@ class TranslationController extends Controller
 
     public function search(Request $request)
     {
-        $query = Translation::query()->with('tags');
+        $translations = $this->translationService->searchTranslations($request);
 
-        if ($request->filled('translation_key')) {
-            $query->where('translation_key', 'like', '%' . $request->translation_key . '%');
-        }
+        return response()->success($translations, 'Translations retrieved successfully.', 200);
 
-        if ($request->filled('translation_content')) {
-            $query->where('translation_content', 'like', '%' . $request->translation_content . '%');
-        }
-
-        if ($request->filled('tag')) {
-            $query = $query->whereHas('tags', function ($q) use ($request) {
-                $q->where('name', $request->tag);
-            });
-        }
-        $translations = $query->paginate(20);
-
-        return response()->success($translations, 'Translation retrieve successfully.', 200);
-
-    }
-
-    /**
-     * @OA\Get(
-     *     path="/api/translations/export",
-     *     summary="Export translations as JSON",
-     *     tags={"Translation"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Translation retrieve successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="data", type="object"),
-     *             @OA\Property(property="meta", type="object")
-     *         )
-     *     )
-     * )
-     */
-    public function export()
-    {
-        $translations = [];
-        DB::table('translations')
-            ->select('id','translation_key','translation_content')
-            ->orderBy('id')
-            ->chunk(1000, function ($chunk) use (&$translations) {
-            foreach ($chunk as $translation) {
-                $translations[] = [
-                    'id' => $translation->id,
-                    'translation_key' => $translation->translation_key,
-                    'translation_content' => $translation->translation_content,
-                ];
-            }
-        });
-
-        return response()->success($translations, 'Translation retrieve successfully.', 200);
     }
 }
