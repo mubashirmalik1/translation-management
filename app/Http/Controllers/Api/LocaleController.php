@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLocaleRequest;
 use App\Http\Requests\UpdateLocaleRequest;
+use App\Http\Resources\LocaleResource;
 use App\Models\Locale;
 use App\Services\LocaleService;
 use Illuminate\Http\Request;
@@ -36,7 +37,8 @@ class LocaleController extends Controller
     public function index()
     {
         $locales = $this->localeService->getAllLocales();
-        return response()->success($locales, 'language retrieve successfully.', 200);
+
+        return response()->success(LocaleResource::collection($locales), 'Language retrieved successfully.', 200);
     }
 
     /**
@@ -69,7 +71,7 @@ class LocaleController extends Controller
 
         $locale = $this->localeService->createLocale($data);
 
-        return response()->success($locale, 'Language created successfully.', 201);
+        return response()->success(new LocaleResource($locale), 'Language created successfully.', 201);
     }
 
     /**
@@ -96,7 +98,7 @@ class LocaleController extends Controller
      */
     public function show(Locale $locale)
     {
-        return response()->success($locale, 'Language retrieved successfully.', 200);
+        return response()->success(new LocaleResource($locale), 'Language retrieved successfully.', 200);
     }
 
     /**
@@ -135,7 +137,7 @@ class LocaleController extends Controller
 
         $this->localeService->updateLocale($locale, $data);
 
-        return response()->success($locale, 'Language updated successfully.', 200);
+        return response()->success(new LocaleResource($locale), 'Language updated successfully.', 200);
 
     }
 
@@ -164,6 +166,6 @@ class LocaleController extends Controller
     public function destroy(Locale $locale)
     {
         $this->localeService->deleteLocale($locale);
-        return response()->success([], 'language delete successfully.', 204);
+        return response()->success([], 'Language deleted successfully.', 204);
     }
 }

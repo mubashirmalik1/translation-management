@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTranslationRequest;
 use App\Http\Requests\UpdateTranslationRequest;
 use App\Models\Tag;
+use App\Http\Resources\TranslationResource;
 use App\Models\Translation;
 use App\Services\TranslationService;
 use Illuminate\Http\Request;
@@ -49,7 +50,7 @@ class TranslationController extends Controller
     {
         $translations = $this->translationService->getAllTranslations($request);
 
-        return response()->success($translations, 'Translation retrieved successfully.', 200);
+        return response()->success(TranslationResource::collection($translations), 'Translation retrieved successfully.', 200);
 
     }
 
@@ -87,7 +88,7 @@ class TranslationController extends Controller
     {
         $translation = $this->translationService->createTranslation($request->validated());
 
-        return response()->success($translation, 'Translation Create successfully.', 201);
+        return response()->success(new TranslationResource($translation), 'Translation Create successfully.', 201);
     }
 
     /**
@@ -114,7 +115,7 @@ class TranslationController extends Controller
      */
     public function show(Translation $translation)
     {
-        return response()->success($translation, 'Translation Retrieve successfully.', 200);
+        return response()->success(new TranslationResource($translation), 'Translation Retrieve successfully.', 200);
     }
 
     /**
@@ -156,7 +157,7 @@ class TranslationController extends Controller
     {
         $translation = $this->translationService->updateTranslation($translation, $request->validated());
 
-        return response()->success($translation, 'Translation update successfully.', 200);
+        return response()->success(new TranslationResource($translation), 'Translation update successfully.', 200);
 
     }
 
@@ -225,8 +226,8 @@ class TranslationController extends Controller
     public function search(Request $request)
     {
         $translations = $this->translationService->searchTranslations($request);
-
-        return response()->success($translations, 'Translations retrieved successfully.', 200);
+   
+        return response()->success(TranslationResource::collection($translations), 'Translations retrieved successfully.', 200);
 
     }
 }
